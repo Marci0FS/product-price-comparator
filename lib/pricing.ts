@@ -13,9 +13,22 @@ import type { RawOffer, EnrichedOffer } from "@/types/product";
 const FR_VAT_RATE = 0.2;
 const CUSTOMS_DUTY_THRESHOLD_EUR = 150;
 
+// Taux de change approximatifs pour normaliser en EUR avant comparaison.
+// Pas de taux temps réel dans ce MVP — à remplacer par une API de change
+// si la précision devient importante.
+const APPROX_EUR_RATE: Record<string, number> = {
+  EUR: 1,
+  USD: 0.92,
+};
+
+function toEur(amount: number, currency: string): number {
+  return amount * (APPROX_EUR_RATE[currency] ?? 1);
+}
+
 export function enrichOffer(offer: RawOffer): EnrichedOffer {
-  const shipping = offer.shippingCost ?? 0;
-  const baseTotal = offer.price + shipping;
+  const priceEur = toEur(offer.price, offer.currency);
+  const shippingEur = toEur(offer.shippingCost ?? 0, offer.currency);
+  const baseTotal = priceEur + shippingEur;
 
   if (offer.isInEuStock) {
     return {

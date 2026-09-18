@@ -1,4 +1,4 @@
-export type SupplierId = "aliexpress" | "bigbuy";
+export type SupplierId = "aliexpress" | "bigbuy" | "cjdropshipping";
 
 export interface RawOffer {
   supplier: SupplierId;

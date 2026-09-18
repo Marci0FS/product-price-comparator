@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { identifyProductKeywords } from "@/lib/vision";
 import { searchAliExpress } from "@/lib/aliexpress";
 import { searchBigBuy } from "@/lib/bigbuy";
+import { searchCjDropshipping } from "@/lib/cjdropshipping";
 import { enrichOffers } from "@/lib/pricing";
 import type { RawOffer, SearchResult, SupplierId } from "@/types/product";
 
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
     }[] = [
       { id: "aliexpress", fn: searchAliExpress },
       { id: "bigbuy", fn: searchBigBuy },
+      { id: "cjdropshipping", fn: searchCjDropshipping },
     ];
 
     const results = await Promise.allSettled(
