@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { SearchResult } from "@/types/product";
 
 function fileToBase64(file: File): Promise<string> {
@@ -19,9 +19,47 @@ function fileToBase64(file: File): Promise<string> {
 export default function Home() {
   const [query, setQuery] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SearchResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function selectImageFile(file: File | null) {
+    if (file && !file.type.startsWith("image/")) {
+      setError("Le fichier déposé n'est pas une image.");
+      return;
+    }
+    setImageFile(file);
+    setError(null);
+  }
+
+  // Génère/nettoie l'URL d'aperçu à chaque changement d'image
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreviewUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(imageFile);
+    setImagePreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [imageFile]);
+
+  // Support du collage (Ctrl+V) d'une image depuis le presse-papiers
+  useEffect(() => {
+    function handlePaste(e: ClipboardEvent) {
+      const item = Array.from(e.clipboardData?.items ?? []).find((it) =>
+        it.type.startsWith("image/")
+      );
+      if (item) {
+        const file = item.getAsFile();
+        if (file) selectImageFile(file);
+      }
+    }
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, []);
 
   async function runSearch() {
     setLoading(true);
@@ -94,11 +132,57 @@ export default function Home() {
             <label className="block text-sm font-medium text-black dark:text-zinc-50">
               Recherche par image
             </label>
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDraggingOver(true);
+              }}
+              onDragLeave={() => setIsDraggingOver(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDraggingOver(false);
+                selectImageFile(e.dataTransfer.files?.[0] ?? null);
+              }}
+              className={`mt-1 flex cursor-pointer flex-col items-center justify-center gap-2 rounded border-2 border-dashed p-6 text-center transition-colors ${
+                isDraggingOver
+                  ? "border-black bg-zinc-100 dark:border-zinc-50 dark:bg-zinc-800"
+                  : "border-zinc-300 dark:border-zinc-700"
+              }`}
+            >
+              {imagePreviewUrl ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Aperçu"
+                    className="max-h-40 rounded object-contain"
+                  />
+                  <div className="text-xs text-zinc-500">{imageFile?.name}</div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      selectImageFile(null);
+                    }}
+                    className="text-xs text-red-600 hover:underline"
+                  >
+                    Retirer l&apos;image
+                  </button>
+                </>
+              ) : (
+                <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                  Glisse-dépose une image, colle-la (Ctrl+V) ou{" "}
+                  <span className="underline">clique pour parcourir</span>
+                </div>
+              )}
+            </div>
             <input
+              ref={fileInputRef}
               type="file"
               accept="image/*"
-              onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-              className="mt-1 w-full text-sm text-zinc-600 dark:text-zinc-400"
+              onChange={(e) => selectImageFile(e.target.files?.[0] ?? null)}
+              className="hidden"
             />
           </div>
 
