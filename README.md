@@ -1,5 +1,7 @@
 # Comparateur produit — MVP (AliExpress + BigBuy)
 
+![Banner](docs/banner.svg)
+
 Colle une image (ou tape un texte) et retrouve le produit avec un prix total
 estimé (produit + port + douane probable) comparé entre AliExpress et BigBuy.
 

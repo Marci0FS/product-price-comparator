@@ -1,0 +1,58 @@
+<svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#3f3f46"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" fill="url(#bg)"/>
+
+  <text x="60" y="120" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#fafafa">
+    Product Price Comparator
+  </text>
+  <text x="60" y="165" font-family="Arial, sans-serif" font-size="22" fill="#a1a1aa">
+    Colle une image, compare le prix total réel entre fournisseurs
+  </text>
+
+  <!-- Image upload icon -->
+  <g transform="translate(80,220)">
+    <rect x="0" y="0" width="140" height="100" rx="10" fill="#27272a" stroke="#52525b" stroke-width="2"/>
+    <circle cx="40" cy="35" r="12" fill="#71717a"/>
+    <path d="M10 85 L45 50 L70 75 L100 45 L130 85 Z" fill="#52525b"/>
+    <text x="70" y="118" font-family="Arial, sans-serif" font-size="14" fill="#a1a1aa" text-anchor="middle">Image produit</text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M260 265 L340 265" stroke="#71717a" stroke-width="3" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#71717a"/>
+    </marker>
+  </defs>
+
+  <!-- AliExpress card -->
+  <g transform="translate(370,210)">
+    <rect x="0" y="0" width="200" height="110" rx="10" fill="#fef3c7" opacity="0.15" stroke="#f59e0b" stroke-width="2"/>
+    <text x="20" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#fbbf24">AliExpress</text>
+    <text x="20" y="65" font-family="Arial, sans-serif" font-size="14" fill="#d4d4d8">3,19 € — CN</text>
+    <text x="20" y="90" font-family="Arial, sans-serif" font-size="14" fill="#d4d4d8">5-7 jours</text>
+  </g>
+
+  <!-- BigBuy card -->
+  <g transform="translate(610,210)">
+    <rect x="0" y="0" width="200" height="110" rx="10" fill="#dbeafe" opacity="0.15" stroke="#3b82f6" stroke-width="2"/>
+    <text x="20" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#60a5fa">BigBuy</text>
+    <text x="20" y="65" font-family="Arial, sans-serif" font-size="14" fill="#d4d4d8">Stock UE — ES</text>
+    <text x="20" y="90" font-family="Arial, sans-serif" font-size="14" fill="#d4d4d8">1-2 jours</text>
+  </g>
+
+  <!-- Result arrow -->
+  <path d="M840 265 L920 265" stroke="#71717a" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Result badge -->
+  <g transform="translate(940,225)">
+    <rect x="0" y="0" width="180" height="90" rx="10" fill="#16a34a" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
+    <text x="90" y="35" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#4ade80" text-anchor="middle">Prix total</text>
+    <text x="90" y="65" font-family="Arial, sans-serif" font-size="16" fill="#e4e4e7" text-anchor="middle">le moins cher</text>
+  </g>
+</svg>
